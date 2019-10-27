@@ -1,0 +1,14 @@
+# Considerar sistema en unidades MKS
+
+# MODIFIERS
+
+# UNIVERSE MODIFIERS
+quantity = 200
+interactionRadio = 0.001
+L = 10
+
+# SIMULATION MODIFIERS
+deltaT = 0.00001
+deltaT2 = 0.01
+totalTime = 4
+
