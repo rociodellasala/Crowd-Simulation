@@ -6,7 +6,7 @@ public class Particle {
     private static int WALL_ID = -1;
     private int id;
 
-    private Vector2D previousPosition = null;
+    private Vector2D previousPosition;
     private Vector2D position;
 
     private Vector2D velocity;
@@ -21,6 +21,7 @@ public class Particle {
         this.setVelocity(Vector2D.ZERO);
         this.setRadius(radius);
         this.setMass(mass);
+        this.setPosition(Vector2D.ZERO);
         this.setHasCrashed(false);
         if (isWall)
             this.setId(WALL_ID--);
@@ -109,5 +110,9 @@ public class Particle {
 
     public void setHasCrashed(boolean hasCrashed) {
         this.hasCrashed = hasCrashed;
+    }
+
+    public void setPreviousPosition(Vector2D previousPosition) {
+        this.previousPosition = previousPosition;
     }
 }

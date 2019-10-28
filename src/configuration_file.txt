@@ -3,12 +3,12 @@
 # MODIFIERS
 
 # UNIVERSE MODIFIERS
-quantity = 200
+quantity = 100
 interactionRadio = 0.0001
 L = 10
 
 # SIMULATION MODIFIERS
-deltaT = 0.00001
+deltaT = 0.01
 deltaT2 = 0.01
 totalTime = 4
 

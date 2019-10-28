@@ -15,12 +15,15 @@ public class Simulation {
     private double time;
     private double elapsedTime;
     private VelocityCalculator vcalculator;
+    private double deltaR;
 
-    Simulation(Universe universe, double totalTime, VelocityCalculator vcalculator) {
+    Simulation(double deltaT, Universe universe, double totalTime, VelocityCalculator vcalculator) {
         this.universe = universe;
         this.time = totalTime;
         this.elapsedTime = 0.0;
         this.vcalculator = vcalculator;
+        // Formula numero (8) del paper
+        this.deltaR = Const.maxRadius / (Const.tau/deltaT);
     }
 
     void startUniverse(int quantity) {
@@ -118,7 +121,7 @@ public class Simulation {
             }
 
             vcalculator.calculateVelocity(this.universe.getAllParticles(), this.universe.getParticles());
-            adjustRadio(this.universe.getParticles(), deltaT);
+            adjustRadio(this.universe.getParticles());
             updateParticlesPositions(this.universe.getParticles(), deltaT);
 
             elapsedTime += deltaT;
@@ -130,26 +133,32 @@ public class Simulation {
         return (elapsedTime <= time);
     }
 
-    private void adjustRadio(Set<Particle> particles, double deltaT) {
-        double deltaRadius;
-
+    private void adjustRadio(Set<Particle> particles) {
         for (Particle p : particles) {
             if (p.isHasCrashed())
                 p.setRadius(Const.minRadius);
             else {
                 if(p.getRadius() != Const.maxRadius) {
-                    // Formula numero (8) del paper
-                    deltaRadius = Const.maxRadius / (Const.tau/deltaT);
-                    p.setRadius(p.getRadius() + deltaRadius);
+                    p.setRadius(p.getRadius() + deltaR);
                 }
             }
         }
-
     }
 
+    // TODO 1: Ver que es versor etarget de la ecuacion (5) del paper y terminar la función que la calcula
+        // Ver calculateDesiredVelocity en VelocityCalculator
+    // TODO 2: En el paper dice que primero calcula ve, dsp radios y dsp vd, pero lo hice calculando primero velocidades (same???)
+    // TODO 3: Usamos double o Vector2D para velocidades y posiciones? En el paper habla de x como posicion nomas
+    // TODO 4: Hay que sacar el NeighbourCalculator! o modificarlo, no se si en este caso estara funcionando bien, no probe nada
+
     private void updateParticlesPositions(Set<Particle> particles, double deltaT) {
+        Vector2D auxPreviousPosition;
+
         for (Particle p : particles) {
-            p.setPosition(p.getPreviousPosition().add(p.getVelocity().multiplyByScalar(deltaT));
+            p.setHasCrashed(false);
+            auxPreviousPosition = p.getPosition();
+            p.setPosition(p.getPreviousPosition().add(p.getVelocity().multiplyByScalar(deltaT)));
+            p.setPreviousPosition(auxPreviousPosition);
         }
     }
 }
