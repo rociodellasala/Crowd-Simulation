@@ -7,6 +7,7 @@ public class Const {
 
     public final static double beta = 0.9;
     public final static double vdmax = 0.95;
+    public final static double tau = 0.5;
 
     public final static double mass = 0.01;
 

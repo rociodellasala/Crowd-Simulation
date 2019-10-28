@@ -8,56 +8,33 @@ public class Particle {
 
     private Vector2D previousPosition = null;
     private Vector2D position;
-    private Vector2D futurePosition;
 
-    private Vector2D previousSpeed;
-    private Vector2D speed;
-    private Vector2D futureSpeed;
+    private Vector2D velocity;
 
     private double mass;
     private double radius;
 
+    private boolean hasCrashed;
+
     public Particle(Vector2D position, double mass, double radius, boolean isWall) {
         this.setPosition(position);
-        this.setSpeed(Vector2D.ZERO);
+        this.setVelocity(Vector2D.ZERO);
         this.setRadius(radius);
         this.setMass(mass);
+        this.setHasCrashed(false);
         if (isWall)
             this.setId(WALL_ID--);
         else
             this.setId(ID++);
     }
 
-    public Particle(Vector2D position, double mass, double radius, int id) {
-        this.setPosition(position);
-        this.setSpeed(Vector2D.ZERO);
-        this.setRadius(radius);
-        this.setMass(mass);
-        this.setId(id);
-    }
-
-    public void setPreviousPosition(Vector2D previousPosition) {
-        this.previousPosition = previousPosition;
-    }
 
     public void setPosition(Vector2D position) {
         this.position = position;
     }
 
-    public void setNextPosition(Vector2D nextPosition) {
-        this.futurePosition = nextPosition;
-    }
-
-    public void setPreviousSpeed(Vector2D previousSpeed) {
-        this.previousSpeed = previousSpeed;
-    }
-
-    public void setSpeed(Vector2D speed) {
-        this.speed = speed;
-    }
-
-    public void setNextSpeed(Vector2D nextSpeed) {
-        this.futureSpeed = nextSpeed;
+    public void setVelocity(Vector2D velocity) {
+        this.velocity = velocity;
     }
 
     public void setId(int i) {
@@ -80,12 +57,8 @@ public class Particle {
         return position;
     }
 
-    public Vector2D getNextPosition() {
-        return futurePosition;
-    }
-
-    public Vector2D getSpeed() {
-        return speed;
+    public Vector2D getVelocity() {
+        return velocity;
     }
 
     public int getID() {
@@ -130,4 +103,11 @@ public class Particle {
         return this.getPosition().distance(p.getPosition()).getModule();
     }
 
+    public boolean isHasCrashed() {
+        return hasCrashed;
+    }
+
+    public void setHasCrashed(boolean hasCrashed) {
+        this.hasCrashed = hasCrashed;
+    }
 }

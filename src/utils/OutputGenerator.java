@@ -47,12 +47,11 @@ public class OutputGenerator {
             id = p.getID();
             x = p.getPosition().getX();
             y = p.getPosition().getY();
-            vx = p.getSpeed().getX();
-            vy = p.getSpeed().getY();
+            vx = p.getVelocity().getX();
+            vy = p.getVelocity().getY();
             ra = p.getRadius();
-            pressure = p.getNormalForce()/(2 * Math.PI * ra); 
 
-            double[] currentParticle = {id, x, y, vx, vy, ra, pressure};
+            double[] currentParticle = {id, x, y, vx, vy, ra};
             data.add(currentParticle);
         }
     }
@@ -93,11 +92,11 @@ public class OutputGenerator {
         try {
         	ovitoWriter.write(list.size() + "\n");
             ovitoWriter.write("\\ID" + "\t" + "X" + "\t" + "Y" + "\t" + "Vx" + "\t" + "Vy" + "\t" +
-                    "Radius" + "\t" + "Pressure" + "\n");
+                    "Radius" + "\n");
 
             for (double[] d : list) {
                 ovitoWriter.write((int) d[0] + "\t" + d[1] + "\t" + d[2] + "\t" + d[3] + "\t" + d[4] +
-                        "\t" + d[5] + "\t" + d[6] + "\n");
+                        "\t" + d[5] + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

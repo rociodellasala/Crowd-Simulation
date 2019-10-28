@@ -117,10 +117,9 @@ public class Simulation {
                 System.out.println("Elapsed time: " + elapsedTime);
             }
 
-            vcalculator.calculateEscapeVelocity(this.universe.getAllParticles(), this.universe.getParticles());
-            adjustRadio();
-            vcalculator.calculateDesiredVelocity();
-            updateParticle();
+            vcalculator.calculateVelocity(this.universe.getAllParticles(), this.universe.getParticles());
+            adjustRadio(this.universe.getParticles(), deltaT);
+            updateParticlesPositions(this.universe.getParticles(), deltaT);
 
             elapsedTime += deltaT;
         } while (isConditionNotComplete(elapsedTime));
@@ -131,11 +130,26 @@ public class Simulation {
         return (elapsedTime <= time);
     }
 
-    private void adjustRadio() {
+    private void adjustRadio(Set<Particle> particles, double deltaT) {
+        double deltaRadius;
+
+        for (Particle p : particles) {
+            if (p.isHasCrashed())
+                p.setRadius(Const.minRadius);
+            else {
+                if(p.getRadius() != Const.maxRadius) {
+                    // Formula numero (8) del paper
+                    deltaRadius = Const.maxRadius / (Const.tau/deltaT);
+                    p.setRadius(p.getRadius() + deltaRadius);
+                }
+            }
+        }
 
     }
 
-    private void updateParticle() {
-
+    private void updateParticlesPositions(Set<Particle> particles, double deltaT) {
+        for (Particle p : particles) {
+            p.setPosition(p.getPreviousPosition().add(p.getVelocity().multiplyByScalar(deltaT));
+        }
     }
 }
