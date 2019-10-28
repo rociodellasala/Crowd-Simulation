@@ -1,7 +1,6 @@
 package calculators;
 
 import models.Particle;
-import models.Universe;
 import utils.Const;
 
 import java.util.Map;
@@ -10,8 +9,11 @@ import java.util.Set;
 public class VelocityCalculator {
 
     private NeighbourCalculator ncalculator;
+    private double deltaR;
 
-    public VelocityCalculator(NeighbourCalculator ncalculator) {
+    public VelocityCalculator(NeighbourCalculator ncalculator, double deltaT) {
+        // Formula numero (8) del paper
+        this.deltaR = Const.maxRadius / (Const.tau/deltaT);
         this.ncalculator = ncalculator;
     }
 
@@ -26,13 +28,17 @@ public class VelocityCalculator {
                 // esta "free of contact"
             myneighbours = neighbours.get(p);
             if (myneighbours.isEmpty() || (myneighbours.size() == 1 && myneighbours.contains(p))) {
+                if (p.getRadius() < Const.maxRadius) {
+                    p.setRadius(p.getRadius() + deltaR);
+                }
                 calculateDesiredVelocity(p);
             } else {
-                p.setHasCrashed(true);
+                p.setRadius(Const.minRadius);
                 calculateEscapeVelocity(p, myneighbours);
             }
         }
     }
+
 
     private void calculateEscapeVelocity(Particle particle, Set<Particle> neighbours) {
         double eijsum = 0;
@@ -42,7 +48,7 @@ public class VelocityCalculator {
         for(Particle neighbour : neighbours) {
             // Formula numero (7) del paper
             directionandsense = (particle.getPosition().subtract(neighbour.getPosition())) /
-                    Math.abs(particle.getPosition().subtract(neighbour.getPosition());
+                    Math.abs(particle.getPosition().subtract(neighbour.getPosition()));
             eijsum += directionandsense;
             eijabssum += Math.abs(directionandsense);
         }
@@ -54,6 +60,7 @@ public class VelocityCalculator {
 
     private void calculateDesiredVelocity(Particle p) {
         double desiredWalkingSpeed;
+
 
         // Formula numero (1) del paper
         desiredWalkingSpeed

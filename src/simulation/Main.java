@@ -25,9 +25,9 @@ public class Main {
         universe = new Universe();
 
         NeighbourCalculator ncalculator = new NeighbourCalculator(config.getInteractionRadio());
-        VelocityCalculator velocityCalculator = new VelocityCalculator(ncalculator);
+        VelocityCalculator velocityCalculator = new VelocityCalculator(ncalculator, config.getDeltaT());
 
-        simulation = new Simulation(config.getDeltaT(), universe, config.getTotalTime(), velocityCalculator);
+        simulation = new Simulation(universe, config.getTotalTime(), velocityCalculator);
 
         OutputGenerator.initializeOvito();
 
