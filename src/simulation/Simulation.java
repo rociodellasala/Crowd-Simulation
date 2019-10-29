@@ -49,15 +49,15 @@ public class Simulation {
 
         for (int i = 0; i < quantity; i++) {
             do {
-                angle = getRandomDouble(-3,3);
-                radius = Const.minRadius;
+                angle = getRandomDouble(-4,4);
+                radius = 2 * Const.minRadius;
                 positionX = mediumL +
                         getRandomDouble(Const.innerRadius + radius, Const.outerRadius - radius) * Math.sin(angle);
                 positionY = mediumL +
                         getRandomDouble(Const.innerRadius + radius, Const.outerRadius - radius) * Math.cos(angle);
                 check = checkSuperposition(positionX, positionY, radius);
             } while (!check);
-            particle = new Particle(new Vector2D(positionX, positionY), Const.mass, radius, false);
+            particle = new Particle(new Vector2D(positionX, positionY), radius, false);
             this.universe.getParticles().add(particle);
         }
     }
@@ -72,10 +72,10 @@ public class Simulation {
         for (double i = -2; i < 2; i +=  0.005) {
             double positionX = wallrad * Math.sin(i);
             double positionY = wallrad * Math.cos(i);
-            this.universe.getParticles().add(new Particle(new Vector2D(mediumL + positionX, mediumL + positionY),
-                    Const.mass, pradius, true));
-            this.universe.getParticles().add(new Particle(new Vector2D(mediumL - positionX, mediumL - positionY),
-                    Const.mass, pradius, true));
+            this.universe.getWalls().add(new Particle(new Vector2D(mediumL + positionX, mediumL + positionY)
+                    , pradius, true));
+            this.universe.getWalls().add(new Particle(new Vector2D(mediumL - positionX, mediumL - positionY)
+                    , pradius, true));
         }
     }
 
@@ -109,7 +109,7 @@ public class Simulation {
     void simulate(double deltaT, double deltaT2) {
         System.out.println("Comenzando la simulacion");
         double elapsedDeltaT2 = deltaT2;
-
+        OutputGenerator.recopilateData(this);
         do {
             if (elapsedTime == deltaT || elapsedTime > elapsedDeltaT2) {
                 OutputGenerator.recopilateData(this);
@@ -123,17 +123,12 @@ public class Simulation {
             elapsedTime += deltaT;
         } while (isConditionNotComplete(elapsedTime));
 
+        OutputGenerator.recopilateData(this);
     }
 
     private boolean isConditionNotComplete(double elapsedTime) {
         return (elapsedTime <= time);
     }
-
-
-    // TODO 1: Ver que es versor etarget de la ecuacion (5) del paper y terminar la función que la calcula
-        // Ver calculateDesiredVelocity en VelocityCalculator
-    // TODO 2: Usamos double o Vector2D para velocidades y posiciones? En el paper habla de x como posicion nomas
-    // TODO 3: Hay que sacar el NeighbourCalculator! o modificarlo, no se si en este caso estara funcionando bien, no probe nada
 
     private void updateParticlesPositions(Set<Particle> particles, double deltaT) {
         for (Particle p : particles) {

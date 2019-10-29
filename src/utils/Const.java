@@ -9,12 +9,13 @@ public class Const {
     public final static double vdmax = 0.95;
     public final static double tau = 0.5;
 
-    public final static double mass = 0.01;
+    public final static double interactionRadio = 0.001;
 
     public final static double outerRadius = 4;
     public final static double innerRadius = 2;
 
     public static double L;
+
     public Const(double L) {
         Const.L = L;
     }

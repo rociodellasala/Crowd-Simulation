@@ -39,10 +39,6 @@ public class Configuration {
         return Double.parseDouble(program_configuration.get("L"));
     }
 
-    public double getW() {
-        return Double.parseDouble(program_configuration.get("W"));
-    }
-
     public double getInteractionRadio() {
         return Double.parseDouble(program_configuration.get("interactionRadio"));
     }

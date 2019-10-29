@@ -1,6 +1,5 @@
 package simulation;
 
-import calculators.NeighbourCalculator;
 import calculators.VelocityCalculator;
 import models.Universe;
 import utils.Configuration;
@@ -24,8 +23,8 @@ public class Main {
         System.out.println("Creando el universo");
         universe = new Universe();
 
-        NeighbourCalculator ncalculator = new NeighbourCalculator(config.getInteractionRadio());
-        VelocityCalculator velocityCalculator = new VelocityCalculator(ncalculator, config.getDeltaT());
+        double mediumL = (Const.L / 2);
+        VelocityCalculator velocityCalculator = new VelocityCalculator(config.getDeltaT(), mediumL);
 
         simulation = new Simulation(universe, config.getTotalTime(), velocityCalculator);
 
@@ -39,7 +38,7 @@ public class Main {
     }
 
     private static void checkParameters(Configuration config) {
-        if (config.getQuantity() < 1 || config.getQuantity() > 450) {
+        if (config.getQuantity() < 1 || config.getQuantity() > 600) {
             throw new IllegalArgumentException("La cantidad de particulas debe ser como minimo 1");
         }
 

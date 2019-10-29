@@ -1,73 +1,92 @@
 package calculators;
 
 import models.Particle;
+import models.Vector2D;
 import utils.Const;
 
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 public class VelocityCalculator {
 
-    private NeighbourCalculator ncalculator;
     private double deltaR;
+    private double mediumL;
 
-    public VelocityCalculator(NeighbourCalculator ncalculator, double deltaT) {
+    public VelocityCalculator(double deltaT, double mediumL) {
         // Formula numero (8) del paper
         this.deltaR = Const.maxRadius / (Const.tau/deltaT);
-        this.ncalculator = ncalculator;
+        this.mediumL = mediumL;
     }
 
     public void calculateVelocity(Set<Particle> all, Set<Particle> particles) {
-        Map<Particle, Set<Particle>> neighbours = ncalculator.getNeighbours(all);
-        Set<Particle> myneighbours;
+        Set<Particle> close;
 
         for (Particle p : particles) {
-            // TODO: Chequear la condicion del if!
-                // no estoy segura si la calcu de vecinos devuelve vecinos o vecinos + la propia particula
-                // dejo las dos condiciones, dsp hay q sacar y ver bien cual es la condicion para ver si la particula
-                // esta "free of contact"
-            myneighbours = neighbours.get(p);
-            if (myneighbours.isEmpty() || (myneighbours.size() == 1 && myneighbours.contains(p))) {
+            close = new HashSet<>();
+            for (Particle neighbour : all) {
+                if (p.getDistance(neighbour) - p.getRadius() - neighbour.getRadius() < Const.interactionRadio) {
+                    if(!p.equals(neighbour)) {
+                        close.add(neighbour);
+                    }
+                }
+            }
+            if (close.size() > 0) {
+                p.setRadius(Const.minRadius);
+                calculateEscapeVelocity(p, close);
+            } else {
                 if (p.getRadius() < Const.maxRadius) {
                     p.setRadius(p.getRadius() + deltaR);
                 }
                 calculateDesiredVelocity(p);
-            } else {
-                p.setRadius(Const.minRadius);
-                calculateEscapeVelocity(p, myneighbours);
             }
         }
     }
 
-
     private void calculateEscapeVelocity(Particle particle, Set<Particle> neighbours) {
-        double eijsum = 0;
+        double eijsumx = 0;
+        double eijsumy = 0;
         double eijabssum = 0;
-        double directionandsense;
+        double directionandsensex;
+        double directionandsensey;
+        double distancex;
+        double distancey;
+        double distance;
 
         for(Particle neighbour : neighbours) {
             // Formula numero (7) del paper
-            directionandsense = (particle.getPosition().subtract(neighbour.getPosition())) /
-                    Math.abs(particle.getPosition().subtract(neighbour.getPosition()));
-            eijsum += directionandsense;
-            eijabssum += Math.abs(directionandsense);
+            distancex = particle.getPosition().getX() - neighbour.getPosition().getX();
+            distancey = particle.getPosition().getY() - neighbour.getPosition().getY();
+            distance = Math.sqrt( Math.pow(distancex,2) + Math.pow(distancey,2));
+            directionandsensex = distancex /  distance;
+            directionandsensey = distancey /  distance;
+            eijsumx += directionandsensex;
+            eijsumy += directionandsensey;
+            eijabssum += Math.sqrt(Math.pow(directionandsensex,2) + Math.pow(directionandsensey,2));
         }
-
         // Formula numero (6) y (9) del paper
-        particle.setVelocity(Const.vdmax * (eijsum/eijabssum));
-        // TODO: Que onda dejamos Vector2D y descomponemos de alguna forma o usamos double para speed y position?
+        particle.setVelocity(new Vector2D(Const.vdmax * (eijsumx/eijabssum), Const.vdmax * (eijsumy/eijabssum)));
     }
 
     private void calculateDesiredVelocity(Particle p) {
         double desiredWalkingSpeed;
+        double distancex;
+        double distancey;
+        double distance;
+        double tangencialx;
+        double tangencialy;
 
-
+        distancex = p.getPosition().getX() - mediumL;
+        distancey = p.getPosition().getY() - mediumL;
+        distance = Math.sqrt( Math.pow(distancex,2) + Math.pow(distancey,2));
+        tangencialx = - (distancey / distance);
+        tangencialy = distancex / distance;
+        System.out.println(distancex + " " + distancey + " " + distance + " " + tangencialx + " " + tangencialy);
         // Formula numero (1) del paper
         desiredWalkingSpeed
                 = Const.vdmax * (Math.pow((p.getRadius() - Const.minRadius)/(Const.maxRadius - Const.minRadius),
                             Const.beta));
 
-        // Formula numero (5) del paper //TODO: HAY QUE CALCULAR etarget!
-        p.setVelocity(desiredWalkingSpeed); //TODO: Que onda dejamos Vector2D o double para speed?
+        // Formula numero (5) del paper
+        p.setVelocity(new Vector2D(tangencialy * desiredWalkingSpeed, tangencialx * desiredWalkingSpeed ));
     }
 }

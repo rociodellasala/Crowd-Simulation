@@ -10,22 +10,17 @@ public class Particle {
 
     private Vector2D velocity;
 
-    private double mass;
     private double radius;
 
-    private boolean hasCrashed;
-
-    public Particle(Vector2D position, double mass, double radius, boolean isWall) {
+    public Particle(Vector2D position, double radius, boolean isWall) {
         this.setPosition(position);
         this.setVelocity(Vector2D.ZERO);
         this.setRadius(radius);
-        this.setMass(mass);
         if (isWall)
             this.setId(WALL_ID--);
         else
             this.setId(ID++);
     }
-
 
     public void setPosition(Vector2D position) {
         this.position = position;
@@ -43,10 +38,6 @@ public class Particle {
         this.radius = radius;
     }
 
-    private void setMass(double mass) {
-        this.mass = mass;
-    }
-
     public Vector2D getPosition() {
         return position;
     }
@@ -61,10 +52,6 @@ public class Particle {
 
     public double getRadius() {
         return radius;
-    }
-
-    public double getMass() {
-        return mass;
     }
 
     @Override
