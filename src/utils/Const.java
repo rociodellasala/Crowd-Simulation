@@ -9,7 +9,7 @@ public class Const {
     public final static double vdmax = 0.95;
     public final static double tau = 0.5;
 
-    public final static double interactionRadio = 0.001;
+    public final static double interactionRadio = 0.000001;
 
     public final static double outerRadius = 4;
     public final static double innerRadius = 2;

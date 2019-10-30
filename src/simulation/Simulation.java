@@ -50,7 +50,7 @@ public class Simulation {
         for (int i = 0; i < quantity; i++) {
             do {
                 angle = getRandomDouble(-4,4);
-                radius = 2 * Const.minRadius;
+                radius = Const.minRadius;
                 positionX = mediumL +
                         getRandomDouble(Const.innerRadius + radius, Const.outerRadius - radius) * Math.sin(angle);
                 positionY = mediumL +
