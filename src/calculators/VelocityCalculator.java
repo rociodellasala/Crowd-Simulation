@@ -25,14 +25,6 @@ public class VelocityCalculator {
         for (Particle p : particles) {
             close = new HashSet<>();
             for (Particle neighbour : all) {
-            	/*
-                if (p.getDistance(neighbour) < Const.interactionRadio) {
-	                if(!p.equals(neighbour)) {
-	                    close.add(neighbour);
-	                }
-            	}*/
-            	
-            	//Regla Ari
                 if (p.getDistance(neighbour) - p.getRadius() - neighbour.getRadius() < Const.interactionRadio) {
                     if(!p.equals(neighbour)) {
                         close.add(neighbour);
@@ -110,6 +102,6 @@ public class VelocityCalculator {
 
         // Formula numero (5) del paper
         p.setVelocity(new Vector2D(tangencialx * desiredWalkingSpeed, tangencialy * desiredWalkingSpeed ));
-        p.setTangencial(new Vector2D(p.getVelocity().getX(), p.getVelocity().getY()));
+        p.setTangencial(desiredWalkingSpeed, desiredWalkingSpeed);
     }
 }

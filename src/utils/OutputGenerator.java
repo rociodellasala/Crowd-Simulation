@@ -125,7 +125,7 @@ public class OutputGenerator {
             double totalvelocity = 0.0;
             double average;
             for (double[] d : list) {
-                velocity = Math.sqrt( Math.pow(d[3],2) + Math.pow(d[4],2));
+                velocity = d[3] + d[4];
                 totalvelocity += velocity;
             }
             average = totalvelocity / list.size();
