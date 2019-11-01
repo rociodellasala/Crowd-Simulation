@@ -15,20 +15,29 @@ import java.util.Set;
 
 public class OutputGenerator {
     private static FileWriter ovitoWriter;
+    private static FileWriter timeWriter;
+    private static FileWriter velocityWriter;
 
     public static void initializeOvito() {
         File data = createFile("./ovito.txt");
+        File times = createFile("./times.txt");
+        File velocity = createFile("./velocity.txt");
         ovitoWriter = openWriter(data);
+        timeWriter = openWriter(times);
+        velocityWriter = openWriter(velocity);
     }
 
     public static void closeFiles() {
         closeWriter(ovitoWriter);
+        closeWriter(timeWriter);
+        closeWriter(velocityWriter);
     }
 
     public static void recopilateData(Simulation simulation) {
         List<double[]> data = new ArrayList<>();
         Set<Particle> walls = new HashSet<>();
         recopilateParticlesData(simulation.getUniverse().getParticles(), data);
+        generateVelocities(data);
         for (Particle p : simulation.getUniverse().getWalls())
             walls.add(p);
         recopilateParticlesData(walls, data);
@@ -99,6 +108,30 @@ public class OutputGenerator {
                         "\t" + d[5] + "\n");
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void generateTimes(double time){
+        try{
+            timeWriter.write(time + ",");
+        }catch (IOException e) {
+        e.printStackTrace();
+        }
+    }
+
+    private static void generateVelocities(List<double[]> list){
+        try{
+            double velocity;
+            double totalvelocity = 0.0;
+            double average;
+            for (double[] d : list) {
+                velocity = Math.sqrt( Math.pow(d[3],2) + Math.pow(d[4],2));
+                totalvelocity += velocity;
+            }
+            average = totalvelocity / list.size();
+            velocityWriter.write(average + ",");
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -7,7 +7,7 @@ quantity = 200
 L = 10
 
 # SIMULATION MODIFIERS
-deltaT = 0.01
-deltaT2 = 0.01
-totalTime = 55
+deltaT = 0.05
+deltaT2 = 0.1
+totalTime = 60
 

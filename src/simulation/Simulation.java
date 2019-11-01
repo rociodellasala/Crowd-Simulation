@@ -109,11 +109,12 @@ public class Simulation {
     void simulate(double deltaT, double deltaT2) {
         System.out.println("Comenzando la simulacion");
         double elapsedDeltaT2 = deltaT2;
-        OutputGenerator.recopilateData(this);
         do {
             if (elapsedTime == deltaT || elapsedTime > elapsedDeltaT2) {
                 OutputGenerator.recopilateData(this);
-                elapsedDeltaT2 = elapsedTime + deltaT2;
+                OutputGenerator.generateTimes(elapsedDeltaT2);
+                elapsedDeltaT2 += deltaT2;
+                elapsedDeltaT2 = Math.round( elapsedDeltaT2 * 100.0 ) / 100.0;
                 System.out.println("Elapsed time: " + elapsedTime);
             }
 
@@ -122,7 +123,7 @@ public class Simulation {
 
             elapsedTime += deltaT;
         } while (isConditionNotComplete(elapsedTime));
-
+        OutputGenerator.generateTimes(elapsedDeltaT2);
         OutputGenerator.recopilateData(this);
     }
 

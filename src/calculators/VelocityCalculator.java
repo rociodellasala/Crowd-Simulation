@@ -89,7 +89,6 @@ public class VelocityCalculator {
         distance = Math.sqrt( Math.pow(distancex,2) + Math.pow(distancey,2));
         tangencialx = - (distancey / distance);
         tangencialy = distancex / distance;
-        System.out.println(distancex + " " + distancey + " " + distance + " " + tangencialx + " " + tangencialy);
         // Formula numero (1) del paper
         desiredWalkingSpeed
                 = Const.vdmax * (Math.pow((p.getRadius() - Const.minRadius)/(Const.maxRadius - Const.minRadius),
