@@ -102,6 +102,6 @@ public class VelocityCalculator {
 
         // Formula numero (5) del paper
         p.setVelocity(new Vector2D(tangencialx * desiredWalkingSpeed, tangencialy * desiredWalkingSpeed ));
-        p.setTangencial(desiredWalkingSpeed, desiredWalkingSpeed);
+        p.setTangencial(new Vector2D(desiredWalkingSpeed, desiredWalkingSpeed));
     }
 }
