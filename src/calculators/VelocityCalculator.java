@@ -4,6 +4,7 @@ import models.Particle;
 import models.Vector2D;
 import utils.Const;
 
+import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,6 +61,9 @@ public class VelocityCalculator {
         double distancex;
         double distancey;
         double distance;
+        double tangencialx;
+        double tangencialy;
+        double tangencial;
 
         for(Particle neighbour : neighbours) {
             // Formula numero (7) del paper
@@ -74,6 +78,16 @@ public class VelocityCalculator {
         }
         // Formula numero (6) y (9) del paper
         particle.setVelocity(new Vector2D(Const.vdmax * (eijsumx/eijabssum), Const.vdmax * (eijsumy/eijabssum)));
+
+        distancex = particle.getPosition().getX() - mediumL;
+        distancey = particle.getPosition().getY() - mediumL;
+        distance = Math.sqrt( Math.pow(distancex,2) + Math.pow(distancey,2));
+        tangencialx = - (distancey / distance);
+        tangencialy = distancex / distance;
+
+        particle.setTangencial(new Vector2D(particle.getVelocity().getX() * tangencialx, particle.getVelocity().getY() * tangencialy));
+
+
     }
 
     private void calculateDesiredVelocity(Particle p) {
@@ -96,5 +110,6 @@ public class VelocityCalculator {
 
         // Formula numero (5) del paper
         p.setVelocity(new Vector2D(tangencialx * desiredWalkingSpeed, tangencialy * desiredWalkingSpeed ));
+        p.setTangencial(new Vector2D(p.getVelocity().getX(), p.getVelocity().getY()));
     }
 }

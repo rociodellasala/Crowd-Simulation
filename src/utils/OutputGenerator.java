@@ -50,14 +50,13 @@ public class OutputGenerator {
         double x, y;
         double vx, vy;
         double ra;
-        double pressure;
 
         for (Particle p : particles) {
             id = p.getID();
             x = p.getPosition().getX();
             y = p.getPosition().getY();
-            vx = p.getVelocity().getX();
-            vy = p.getVelocity().getY();
+            vx = p.getTangencial().getX();
+            vy = p.getTangencial().getY();
             ra = p.getRadius();
 
             double[] currentParticle = {id, x, y, vx, vy, ra};

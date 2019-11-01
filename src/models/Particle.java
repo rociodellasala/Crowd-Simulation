@@ -7,14 +7,15 @@ public class Particle {
     private int id;
 
     private Vector2D position;
-
     private Vector2D velocity;
+    private Vector2D tangencial;
 
     private double radius;
 
     public Particle(Vector2D position, double radius, boolean isWall) {
         this.setPosition(position);
         this.setVelocity(Vector2D.ZERO);
+        this.setTangencial(Vector2D.ZERO);
         this.setRadius(radius);
         if (isWall)
             this.setId(WALL_ID--);
@@ -29,6 +30,8 @@ public class Particle {
     public void setVelocity(Vector2D velocity) {
         this.velocity = velocity;
     }
+
+    public void setTangencial(Vector2D tangencial) { this.tangencial = tangencial;}
 
     public void setId(int i) {
         this.id = i;
@@ -45,6 +48,8 @@ public class Particle {
     public Vector2D getVelocity() {
         return velocity;
     }
+
+    public Vector2D getTangencial() { return tangencial; }
 
     public int getID() {
         return id;
