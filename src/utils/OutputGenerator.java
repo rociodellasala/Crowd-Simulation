@@ -48,7 +48,7 @@ public class OutputGenerator {
     public static void recopilateParticlesData(Set<Particle> particles, List<double[]> data) {
         double id;
         double x, y;
-        double v, vx, vy;
+        double vx, vy;
         double ra;
 
         for (Particle p : particles) {
@@ -57,10 +57,9 @@ public class OutputGenerator {
             y = p.getPosition().getY();
             vx = p.getTangencial().getX();
             vy = p.getTangencial().getY();
-            v = vx + vy;
             ra = p.getRadius();
 
-            double[] currentParticle = {id, x, y, v, vx, vy, ra};
+            double[] currentParticle = {id, x, y, vx, vy, ra};
             data.add(currentParticle);
         }
     }
@@ -100,12 +99,12 @@ public class OutputGenerator {
 
         try {
         	ovitoWriter.write(list.size() + "\n");
-            ovitoWriter.write("\\ID" + "\t" + "X" + "\t" + "Y" + "\t" + "V" + "\t" + "Vx" + "\t" + "Vy" + "\t" +
+            ovitoWriter.write("\\ID" + "\t" + "X" + "\t" + "Y" + "\t" + "Vx" + "\t" + "Vy" + "\t" +
                     "Radius" + "\n");
 
             for (double[] d : list) {
                 ovitoWriter.write((int) d[0] + "\t" + d[1] + "\t" + d[2] + "\t" + d[3] + "\t" + d[4] +
-                        "\t" + d[5] + "\t" + d[6] + "\n");
+                        "\t" + d[5] + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
