@@ -39,6 +39,10 @@ public class VelocityCalculator {
                 if (p.getRadius() < Const.maxRadius) {
                     p.setRadius(p.getRadius() + deltaR);
                 }
+                
+                if(p.getRadius() >= Const.maxRadius) {
+                	p.setRadius(Const.maxRadius);
+                }
                 calculateDesiredVelocity(p);
             }
         }
@@ -69,6 +73,7 @@ public class VelocityCalculator {
             eijabssum += Math.sqrt(Math.pow(directionandsensex,2) + Math.pow(directionandsensey,2));
         }
         // Formula numero (6) y (9) del paper
+        
         particle.setVelocity(new Vector2D(Const.vdmax * (eijsumx/eijabssum), Const.vdmax * (eijsumy/eijabssum)));
 
         distancex = particle.getPosition().getX() - mediumL;
@@ -78,7 +83,7 @@ public class VelocityCalculator {
         tangencialy = distancex / distance;
 
         particle.setTangencial(new Vector2D(particle.getVelocity().getX() * tangencialx, particle.getVelocity().getY() * tangencialy));
-
+       
 
     }
 
