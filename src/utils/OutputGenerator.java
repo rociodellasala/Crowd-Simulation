@@ -129,6 +129,7 @@ public class OutputGenerator {
                 totalvelocity += velocity;
             }
             average = totalvelocity / list.size();
+            //System.out.println(average);
             velocityWriter.write(average + ",");
         }catch (IOException e) {
             e.printStackTrace();

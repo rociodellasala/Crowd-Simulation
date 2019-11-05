@@ -3,7 +3,7 @@
 # MODIFIERS
 
 # UNIVERSE MODIFIERS
-quantity = 200
+quantity = 38
 L = 10
 
 # SIMULATION MODIFIERS
